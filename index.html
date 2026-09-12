@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Holy Qurbana - Syro-Malabar Church</title>
+    <meta name="description" content="Holy Qurbana of the Syro-Malabar Church with daily readings.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <h1>Holy Qurbana</h1>
+        <nav class="desktop-nav">
+            <button id="nav-desktop-today" class="btn-icon" aria-label="Today">Today</button>
+            <button id="nav-desktop-qurbana" class="btn-icon" aria-label="Qurbana">Qurbana</button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="app-container">
+        
+        <!-- Today Screen -->
+        <section id="today-screen" class="screen active">
+            <div class="date-header">
+                <h2 id="today-date">Date</h2>
+                <div class="liturgical-info">
+                    <span id="liturgical-day" class="badge badge-gold">Liturgical Day</span>
+                    <span id="liturgical-season" class="badge badge-burgundy">Season</span>
+                </div>
+            </div>
+            
+            <div class="readings-card">
+                <h3>Today's Readings</h3>
+                <div id="readings-container">
+                    <!-- Readings will be injected here -->
+                </div>
+            </div>
+
+            <div class="action-container">
+                <button id="btn-pray-qurbana" class="btn-primary">
+                    Holy Qurbana
+                </button>
+            </div>
+            
+            <!-- Date Selector (for testing) -->
+            <div class="test-controls">
+                <label for="test-date">Select Date:</label>
+                <input type="date" id="test-date" value="2026-09-12">
+            </div>
+        </section>
+
+        <!-- Qurbana Screen -->
+        <section id="qurbana-screen" class="screen">
+            <div class="qurbana-controls">
+                <div class="controls-left">
+                    <button id="btn-back-today" class="btn-icon" aria-label="Back to Today">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    </button>
+                </div>
+                
+                <div class="quick-jump-container">
+                    <select id="quick-jump-select" class="quick-jump-select" aria-label="Quick Jump Menu">
+                        <option value="" disabled selected>Jump to section...</option>
+                        <option value="Let us begin this Qurbana">Introduction</option>
+                        <option value="Peace and hope to people">Liturgy of the Word</option>
+                        <option value="The Creed">The Creed / Offertory</option>
+                        <option value="God of Abraham">Anaphora (Eucharistic Prayer)</option>
+                        <option value="Wipe away my sins">Communion</option>
+                    </select>
+                </div>
+
+                <div class="font-controls controls-right">
+                    <button id="btn-font-decrease" class="btn-icon" aria-label="Decrease font size">A-</button>
+                    <button id="btn-font-increase" class="btn-icon" aria-label="Increase font size">A+</button>
+                    <button id="btn-dark-mode" class="btn-icon" aria-label="Toggle dark mode">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="qurbana-content" class="qurbana-reader">
+                <!-- Qurbana text will be injected here -->
+            </div>
+            
+            <button id="btn-back-to-top" class="btn-fab" aria-label="Back to top">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav">
+        <button id="nav-today" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Today</span>
+        </button>
+        <button id="nav-qurbana" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>Qurbana</span>
+        </button>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="mass-data.js"></script>
+    <script src="readings.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
