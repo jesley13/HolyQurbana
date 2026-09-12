@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Data Rendering ---
     function generateBibleGatewayLink(reference) {
-        const encodedRef = encodeURIComponent(reference);
+        // Remove anything inside parentheses and trim trailing whitespace
+        const cleanRef = reference.replace(/\(.*?\)/g, '').trim();
+        const encodedRef = encodeURIComponent(cleanRef);
         return `https://www.biblegateway.com/passage/?search=${encodedRef}&version=ESV`;
     }
 
