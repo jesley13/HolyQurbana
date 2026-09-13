@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Holy Qurbana - Syro-Malabar Church</title>
     <meta name="description" content="Holy Qurbana of the Syro-Malabar Church with daily readings.">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,15 @@
         <!-- Today Screen -->
         <section id="today-screen" class="screen active">
             <div class="date-header">
-                <h2 id="today-date">Date</h2>
+                <div class="date-nav-container">
+                    <button id="btn-prev-day" class="btn-icon btn-nav-day" aria-label="Previous Day">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <h2 id="today-date">Date</h2>
+                    <button id="btn-next-day" class="btn-icon btn-nav-day" aria-label="Next Day">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                </div>
                 <div class="liturgical-info">
                     <span id="liturgical-day" class="badge badge-gold">Liturgical Day</span>
                     <span id="liturgical-season" class="badge badge-burgundy">Season</span>
@@ -110,6 +118,6 @@
     <!-- Scripts -->
     <script src="mass-data.js?v=3"></script>
     <script src="readings.js?v=2"></script>
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
 </body>
 </html>

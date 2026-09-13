@@ -175,6 +175,31 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
+    const btnPrevDay = document.getElementById('btn-prev-day');
+    const btnNextDay = document.getElementById('btn-next-day');
+
+    function changeDateByDays(days) {
+        const current = new Date(currentDate);
+        current.setDate(current.getDate() + days);
+        const year = current.getFullYear();
+        const month = String(current.getMonth() + 1).padStart(2, '0');
+        const day = String(current.getDate()).padStart(2, '0');
+        const newDate = `${year}-${month}-${day}`;
+        
+        currentDate = newDate;
+        if (testDate) {
+            testDate.value = currentDate;
+        }
+        renderTodayScreen(currentDate);
+    }
+
+    if (btnPrevDay) {
+        btnPrevDay.addEventListener('click', () => changeDateByDays(-1));
+    }
+    if (btnNextDay) {
+        btnNextDay.addEventListener('click', () => changeDateByDays(1));
+    }
+
     // --- Init ---
     if (testDate) {
         testDate.value = currentDate;

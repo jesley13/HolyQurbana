@@ -110,6 +110,29 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-sm);
 }
 
+.date-nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+.date-nav-container h2 {
+    margin-bottom: 0;
+}
+.btn-nav-day {
+    width: 36px;
+    height: 36px;
+    border-color: transparent;
+    color: var(--accent-burgundy);
+}
+.btn-nav-day:hover {
+    background-color: rgba(128, 0, 32, 0.1);
+}
+[data-theme="dark"] .btn-nav-day:hover {
+    background-color: rgba(163, 42, 68, 0.2);
+}
+
 .liturgical-info {
     display: flex;
     justify-content: center;
