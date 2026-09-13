@@ -28,8 +28,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const btnBackToTop = document.getElementById('btn-back-to-top');
 
+    function getTodayString() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     // --- State ---
-    let currentDate = '2026-09-12'; // Default to first test date
+    let currentDate = getTodayString();
+    if (typeof readingsDB !== 'undefined' && !readingsDB[currentDate]) {
+        currentDate = '2026-09-12'; // Fallback if no data
+    }
+    
     let currentSeason = 'Elijah, Cross and Moses';
     let currentFontSize = 16;
     
@@ -164,5 +176,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Init ---
+    if (testDate) {
+        testDate.value = currentDate;
+    }
     renderTodayScreen(currentDate);
 });
