@@ -1,4 +1,4 @@
-const CACHE_NAME = 'holy-qurbana-v1';
+const CACHE_NAME = 'holy-qurbana-v2';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -8,7 +8,7 @@ const ASSETS_TO_CACHE = [
     './readings.js',
     './assets/icons/icon-192.png',
     './assets/icons/icon-512.png',
-    'https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap'
+    './manifest.json'
 ];
 
 self.addEventListener('install', event => {
