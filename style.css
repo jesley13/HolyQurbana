@@ -149,6 +149,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-md);
 }
 
+.desktop-nav {
+    display: none;
+}
+
 .reading-item {
     margin-bottom: var(--spacing-md);
     display: flex;
