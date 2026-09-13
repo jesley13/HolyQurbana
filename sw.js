@@ -1,4 +1,4 @@
-const CACHE_NAME = 'holy-qurbana-v4';
+const CACHE_NAME = 'holy-qurbana-v6';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -40,7 +40,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
+        caches.match(event.request, { ignoreSearch: true })
             .then(response => {
                 if (response) {
                     return response;

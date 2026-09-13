@@ -8,7 +8,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#800020">
     <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@
     <header class="app-header">
         <h1>Holy Qurbana</h1>
         <div class="header-right">
-            <button id="btn-install-app" class="btn-install" style="display: none;">Install App</button>
+            <button id="btn-install-app" class="btn-install">Install App</button>
             <nav class="desktop-nav">
                 <button id="nav-desktop-today" class="btn-icon" aria-label="Today">Today</button>
                 <button id="nav-desktop-qurbana" class="btn-icon" aria-label="Qurbana Text">Qurbana Text</button>
@@ -130,10 +130,19 @@
         </button>
     </nav>
 
+    <!-- PWA Fallback Modal -->
+    <div id="pwa-fallback-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Install Holy Qurbana</h3>
+            <p>To install this app on your device, tap the browser menu (⋮ or ⇪) and select <strong>Add to Home Screen</strong> or <strong>Install App</strong>.</p>
+            <button id="btn-close-modal" class="btn-primary" style="margin-top: 16px; padding: 10px 20px;">Got it</button>
+        </div>
+    </div>
+
     <!-- Scripts -->
-    <script src="mass-data.js?v=4"></script>
-    <script src="readings.js?v=3"></script>
-    <script src="app.js?v=8"></script>
+    <script src="mass-data.js"></script>
+    <script src="readings.js"></script>
+    <script src="app.js"></script>
     
     <!-- PWA Service Worker -->
     <script>

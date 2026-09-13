@@ -278,36 +278,62 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTodayScreen(currentDate);
 
     // --- PWA Installation Logic ---
-    let deferredPrompt;
+    console.log('[PWA] Checking standalone mode on load...');
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('[PWA] Running in standalone mode. Install button should be hidden by CSS.');
+    } else {
+        console.log('[PWA] Running in browser mode.');
+    }
+
+    let deferredPrompt = null;
     const installBtn = document.getElementById('btn-install-app');
+    const fallbackModal = document.getElementById('pwa-fallback-modal');
+    const btnCloseModal = document.getElementById('btn-close-modal');
 
     window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('[PWA] beforeinstallprompt event fired! The browser natively supports installation prompt.');
         // Prevent the mini-infobar from appearing on mobile
         e.preventDefault();
         // Stash the event so it can be triggered later.
         deferredPrompt = e;
-        // Update UI notify the user they can install the PWA
-        if (installBtn) {
-            installBtn.style.display = 'inline-block';
-        }
     });
 
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
+            console.log('[PWA] Install button clicked.');
             if (deferredPrompt) {
+                console.log('[PWA] deferredPrompt exists. Triggering native prompt...');
                 // Show the install prompt
                 deferredPrompt.prompt();
                 // Wait for the user to respond to the prompt
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
+                    console.log('[PWA] User accepted the native install prompt');
                 } else {
-                    console.log('User dismissed the install prompt');
+                    console.log('[PWA] User dismissed the native install prompt');
                 }
                 // We've used the prompt, and can't use it again, throw it away
                 deferredPrompt = null;
-                installBtn.style.display = 'none';
+            } else {
+                console.log('[PWA] deferredPrompt is null. Displaying fallback instructions modal.');
+                if (fallbackModal) {
+                    fallbackModal.classList.add('active');
+                }
             }
         });
     }
+
+    if (btnCloseModal && fallbackModal) {
+        btnCloseModal.addEventListener('click', () => {
+            fallbackModal.classList.remove('active');
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        console.log('[PWA] appinstalled event fired! The app was successfully installed.');
+        // Hide the install button immediately just in case CSS media query hasn't updated yet
+        if (installBtn) {
+            installBtn.style.display = 'none';
+        }
+    });
 });

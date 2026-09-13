@@ -540,3 +540,42 @@ input:checked + .toggle-slider:before {
         padding: 8px 16px;
     }
 }
+
+/* Modal Fallback */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.modal-overlay.active {
+    display: flex;
+}
+.modal-content {
+    background-color: var(--card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius);
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.modal-content h3 {
+    margin-top: 0;
+}
+.modal-content p {
+    color: var(--text-muted);
+}
+
+/* Standalone Mode - Hide Install Button */
+@media all and (display-mode: standalone) {
+    .btn-install {
+        display: none !important;
+    }
+}
