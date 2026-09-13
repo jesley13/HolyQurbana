@@ -1,4 +1,4 @@
-const CACHE_NAME = 'holy-qurbana-v3';
+const CACHE_NAME = 'holy-qurbana-v4';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -12,11 +12,15 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', event => {
+    // Skip waiting to immediately activate the new service worker
+    self.skipWaiting();
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                return cache.addAll(ASSETS_TO_CACHE);
-            })
+        caches.open(CACHE_NAME).then(cache => {
+            // We wrap this in a try-catch equivalent so it doesn't fail the install
+            return cache.addAll(ASSETS_TO_CACHE).catch(err => {
+                console.warn('PWA cache addAll failed, but continuing install:', err);
+            });
+        })
     );
 });
 
@@ -38,8 +42,26 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Return cached version or fetch new
-                return response || fetch(event.request);
+                if (response) {
+                    return response;
+                }
+                // Clone the request because it's a one-time use stream
+                const fetchRequest = event.request.clone();
+                return fetch(fetchRequest).then(
+                    response => {
+                        // Check if we received a valid response
+                        if(!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                        }
+                        // Clone the response because it's a one-time use stream
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(event.request, responseToCache);
+                            });
+                        return response;
+                    }
+                );
             })
     );
 });
