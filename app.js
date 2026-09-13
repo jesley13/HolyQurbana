@@ -72,11 +72,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Data Rendering ---
+    let currentLang = 'eng';
+
+    const pocBookMap = {
+        'gen': 'genesis', 'ex': 'exodus', 'lev': 'leviticus', 'num': 'numbers', 'deut': 'deuteronomy',
+        'josh': 'joshua', 'judg': 'judges', 'ruth': 'ruth', '1 sam': '1-samuel', '2 sam': '2-samuel',
+        '1 kgs': '1-kings', '2 kgs': '2-kings', '1 chr': '1-chronicles', '2 chr': '2-chronicles',
+        'ezra': 'ezra', 'neh': 'nehemiah', 'tob': 'tobit', 'jdt': 'judith', 'esth': 'esther',
+        '1 mac': '1-maccabees', '2 mac': '2-maccabees', 'job': 'job', 'ps': 'psalms', 'prov': 'proverbs',
+        'eccl': 'ecclesiastes', 'song': 'song-of-songs', 'wis': 'wisdom', 'sir': 'sirach',
+        'is': 'isaiah', 'jer': 'jeremiah', 'lam': 'lamentations', 'bar': 'baruch', 'ezek': 'ezekiel',
+        'dan': 'daniel', 'hos': 'hosea', 'joel': 'joel', 'amos': 'amos', 'obad': 'obadiah',
+        'jon': 'jonah', 'mic': 'micah', 'nah': 'nahum', 'hab': 'habakkuk', 'zeph': 'zephaniah',
+        'hag': 'haggai', 'zech': 'zechariah', 'mal': 'malachi',
+        'mt': 'matthew', 'mk': 'mark', 'lk': 'luke', 'jn': 'john', 'acts': 'acts',
+        'rom': 'romans', '1 cor': '1-corinthians', '2 cor': '2-corinthians', 'gal': 'galatians',
+        'eph': 'ephesians', 'phil': 'philippians', 'col': 'colossians', '1 thes': '1-thessalonians', '2 thes': '2-thessalonians',
+        '1 tim': '1-timothy', '2 tim': '2-timothy', 'tit': 'titus', 'phlm': 'philemon', 'heb': 'hebrews',
+        'jas': 'james', '1 pet': '1-peter', '2 pet': '2-peter', '1 jn': '1-john', '2 jn': '2-john', '3 jn': '3-john',
+        'jude': 'jude', 'rev': 'revelation'
+    };
+    
+    const ntBooks = ['matthew', 'mark', 'luke', 'john', 'acts', 'romans', '1-corinthians', '2-corinthians', 'galatians', 'ephesians', 'philippians', 'colossians', '1-thessalonians', '2-thessalonians', '1-timothy', '2-timothy', 'titus', 'philemon', 'hebrews', 'james', '1-peter', '2-peter', '1-john', '2-john', '3-john', 'jude', 'revelation'];
+
     function generateBibleGatewayLink(reference) {
-        // Remove anything inside parentheses and trim trailing whitespace
+        if (!reference) return '#';
         const cleanRef = reference.replace(/\(.*?\)/g, '').trim();
         const encodedRef = encodeURIComponent(cleanRef);
         return `https://www.biblegateway.com/passage/?search=${encodedRef}&version=ESV`;
+    }
+
+    function generatePOCBibleLink(englishRef) {
+        if (!englishRef) return '#';
+        const cleanRef = englishRef.replace(/\(.*?\)/g, '').trim().toLowerCase();
+        const match = cleanRef.match(/^(\d?\s*[a-z]+)\s+(\d+):?(.*)$/i);
+        if (!match) return '#';
+        
+        const bookAbbr = match[1].trim();
+        const chapter = match[2].trim();
+        
+        let grandam = '';
+        for (const [abbr, id] of Object.entries(pocBookMap)) {
+            if (bookAbbr.startsWith(abbr) || abbr.startsWith(bookAbbr)) {
+                grandam = id;
+                break;
+            }
+        }
+        
+        if (!grandam) return '#';
+        const bib = ntBooks.includes(grandam) ? 1 : 0;
+        return `https://www.pocbible.com/thirayuka.asp?bib=${bib}&grandam=${grandam}&adyayam=${chapter}`;
     }
 
     function renderTodayScreen(dateStr) {
@@ -89,18 +134,23 @@ document.addEventListener('DOMContentLoaded', () => {
         uiDate.textContent = dateObj.toLocaleDateString(undefined, options);
         
         if (data) {
-            uiDay.textContent = data.liturgicalDay;
-            uiSeason.textContent = data.season;
-            currentSeason = data.season;
+            uiDay.textContent = currentLang === 'mal' && data.liturgicalDay_mal ? data.liturgicalDay_mal : data.liturgicalDay_eng;
+            const season = currentLang === 'mal' && data.season_mal ? data.season_mal : data.season_eng;
+            uiSeason.textContent = season;
+            currentSeason = season;
             
             uiReadings.innerHTML = '';
             data.readings.forEach(reading => {
-                const link = generateBibleGatewayLink(reading.reference);
+                let displayRef = currentLang === 'mal' && reading.reference_mal ? reading.reference_mal : reading.reference_eng;
+                let link = currentLang === 'mal' ? generatePOCBibleLink(reading.reference_eng) : generateBibleGatewayLink(reading.reference_eng);
+                
+                if (!displayRef) return; // Skip if empty
+
                 const readingHtml = `
                     <div class="reading-item">
                         <span class="reading-type">${reading.type}</span>
                         <a href="${link}" target="_blank" rel="noopener noreferrer" class="reading-ref">
-                            ${reading.reference}
+                            ${displayRef}
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-left: 4px; vertical-align: middle;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
                         </a>
                     </div>
@@ -198,6 +248,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (btnNextDay) {
         btnNextDay.addEventListener('click', () => changeDateByDays(1));
+    }
+
+    const langToggle = document.getElementById('lang-toggle');
+    const labelEng = document.getElementById('label-eng');
+    const labelMal = document.getElementById('label-mal');
+    
+    if (langToggle) {
+        langToggle.addEventListener('change', (e) => {
+            currentLang = e.target.checked ? 'mal' : 'eng';
+            
+            if (currentLang === 'mal') {
+                labelMal.classList.add('active');
+                labelEng.classList.remove('active');
+            } else {
+                labelEng.classList.add('active');
+                labelMal.classList.remove('active');
+            }
+            
+            // Re-render to show updated language
+            renderTodayScreen(currentDate);
+        });
     }
 
     // --- Init ---

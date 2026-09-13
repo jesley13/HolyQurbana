@@ -38,22 +38,25 @@ for single_date in daterange(start_date, end_date):
                 readings = []
                 
                 if item.get("Reading1_Eng"):
-                    readings.append({"type": "First Reading", "reference": item["Reading1_Eng"]})
+                    readings.append({"type": "First Reading", "reference_eng": item["Reading1_Eng"], "reference_mal": item.get("Reading1_Mal")})
                 if item.get("Reading2_Eng"):
-                    readings.append({"type": "Second Reading", "reference": item["Reading2_Eng"]})
+                    readings.append({"type": "Second Reading", "reference_eng": item["Reading2_Eng"], "reference_mal": item.get("Reading2_Mal")})
                 if item.get("Reading3_Eng"):
-                    readings.append({"type": "Third Reading", "reference": item["Reading3_Eng"]})
+                    readings.append({"type": "Third Reading", "reference_eng": item["Reading3_Eng"], "reference_mal": item.get("Reading3_Mal")})
                 if item.get("ReadingGospal_Eng"):
-                    readings.append({"type": "Gospel", "reference": item["ReadingGospal_Eng"]})
+                    readings.append({"type": "Gospel", "reference_eng": item["ReadingGospal_Eng"], "reference_mal": item.get("ReadingGospal_Mal")})
                 
-                season = item.get("SeasonName_Eng_Full", "Ordinary Time")
-                if "Elijah" in season and "Cross" in season and "Moses" in season:
-                    season = "Elijah, Cross and Moses"
+                season_eng = item.get("SeasonName_Eng_Full", "Ordinary Time")
+                if "Elijah" in season_eng and "Cross" in season_eng and "Moses" in season_eng:
+                    season_eng = "Elijah, Cross and Moses"
+                season_mal = item.get("SeasonName_Mal_Full", "")
                 
                 readings_db[iso_date] = {
                     "day": single_date.strftime("%A"),
-                    "liturgicalDay": item.get("DayDescription_Eng", ""),
-                    "season": season,
+                    "liturgicalDay_eng": item.get("DayDescription_Eng", ""),
+                    "liturgicalDay_mal": item.get("DayDescription_Mal", ""),
+                    "season_eng": season_eng,
+                    "season_mal": season_mal,
                     "readings": readings
                 }
                 print(f"Fetched {iso_date}")
