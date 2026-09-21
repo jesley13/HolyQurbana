@@ -34,30 +34,73 @@ for single_date in daterange(start_date, end_date):
             items = data.get(f"Set{set_to_use}", [])
             
             if items:
-                item = items[0]
-                readings = []
-                
-                if item.get("Reading1_Eng"):
-                    readings.append({"type": "First Reading", "reference_eng": item["Reading1_Eng"], "reference_mal": item.get("Reading1_Mal")})
-                if item.get("Reading2_Eng"):
-                    readings.append({"type": "Second Reading", "reference_eng": item["Reading2_Eng"], "reference_mal": item.get("Reading2_Mal")})
-                if item.get("Reading3_Eng"):
-                    readings.append({"type": "Third Reading", "reference_eng": item["Reading3_Eng"], "reference_mal": item.get("Reading3_Mal")})
-                if item.get("ReadingGospal_Eng"):
-                    readings.append({"type": "Gospel", "reference_eng": item["ReadingGospal_Eng"], "reference_mal": item.get("ReadingGospal_Mal")})
-                
-                season_eng = item.get("SeasonName_Eng_Full", "Ordinary Time")
+                main_item = items[0]
+                season_eng = main_item.get("SeasonName_Eng_Full", "Ordinary Time")
                 if "Elijah" in season_eng and "Cross" in season_eng and "Moses" in season_eng:
                     season_eng = "Elijah, Cross and Moses"
-                season_mal = item.get("SeasonName_Mal_Full", "")
+                season_mal = main_item.get("SeasonName_Mal_Full", "")
+
+                reading_sets = []
+                for item in items:
+                    readings = []
+                    if item.get("Reading1_Eng") or item.get("Reading1_Mal"):
+                        readings.append({
+                            "type": "First Reading", 
+                            "reference": {
+                                "en": item.get("Reading1_Eng"), 
+                                "ml": item.get("Reading1_Mal")
+                            }
+                        })
+                    if item.get("Reading2_Eng") or item.get("Reading2_Mal"):
+                        readings.append({
+                            "type": "Second Reading", 
+                            "reference": {
+                                "en": item.get("Reading2_Eng"), 
+                                "ml": item.get("Reading2_Mal")
+                            }
+                        })
+                    if item.get("Reading3_Eng") or item.get("Reading3_Mal"):
+                        readings.append({
+                            "type": "Third Reading", 
+                            "reference": {
+                                "en": item.get("Reading3_Eng"), 
+                                "ml": item.get("Reading3_Mal")
+                            }
+                        })
+                    if item.get("ReadingGospal_Eng") or item.get("ReadingGospal_Mal"):
+                        readings.append({
+                            "type": "Gospel", 
+                            "reference": {
+                                "en": item.get("ReadingGospal_Eng"), 
+                                "ml": item.get("ReadingGospal_Mal")
+                            }
+                        })
+                    
+                    # Map ReadingType to 'daily' or 'feast'
+                    reading_type = "daily"
+                    if item.get("ReadingType") == "Special Date Reading":
+                        reading_type = "feast"
+                        
+                    reading_sets.append({
+                        "title": {
+                            "en": item.get("DayDescription_Eng", ""),
+                            "ml": item.get("DayDescription_Mal", "")
+                        },
+                        "type": reading_type,
+                        "readings": readings
+                    })
                 
                 readings_db[iso_date] = {
                     "day": single_date.strftime("%A"),
-                    "liturgicalDay_eng": item.get("DayDescription_Eng", ""),
-                    "liturgicalDay_mal": item.get("DayDescription_Mal", ""),
-                    "season_eng": season_eng,
-                    "season_mal": season_mal,
-                    "readings": readings
+                    "liturgicalDay": {
+                        "en": main_item.get("DayDescription_Eng", ""),
+                        "ml": main_item.get("DayDescription_Mal", "")
+                    },
+                    "season": {
+                        "en": season_eng,
+                        "ml": season_mal
+                    },
+                    "readingSets": reading_sets
                 }
                 print(f"Fetched {iso_date}")
             else:

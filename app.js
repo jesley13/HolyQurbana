@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'rom': 'romans', '1 cor': '1-corinthians', '2 cor': '2-corinthians', 'gal': 'galatians',
         'eph': 'ephesians', 'phil': 'philippians', 'col': 'colossians', '1 thes': '1-thessalonians', '2 thes': '2-thessalonians',
         '1 tim': '1-timothy', '2 tim': '2-timothy', 'tit': 'titus', 'phlm': 'philemon', 'heb': 'hebrews',
-        'jas': 'james', '1 pet': '1-peter', '2 pet': '2-peter', '1 jn': '1-john', '2 jn': '2-john', '3 jn': '3-john',
+        'jas': 'james', '1 pet': '1-peter', '2 pet': '2-peter', '1 pt': '1-peter', '2 pt': '2-peter', '1 jn': '1-john', '2 jn': '2-john', '3 jn': '3-john',
         'jude': 'jude', 'rev': 'revelation'
     };
     
@@ -134,29 +134,47 @@ document.addEventListener('DOMContentLoaded', () => {
         uiDate.textContent = dateObj.toLocaleDateString(undefined, options);
         
         if (data) {
-            uiDay.textContent = currentLang === 'mal' && data.liturgicalDay_mal ? data.liturgicalDay_mal : data.liturgicalDay_eng;
-            const season = currentLang === 'mal' && data.season_mal ? data.season_mal : data.season_eng;
+            uiDay.textContent = currentLang === 'mal' && data.liturgicalDay.ml ? data.liturgicalDay.ml : data.liturgicalDay.en;
+            const season = currentLang === 'mal' && data.season.ml ? data.season.ml : data.season.en;
             uiSeason.textContent = season;
             currentSeason = season;
             
             uiReadings.innerHTML = '';
-            data.readings.forEach(reading => {
-                let displayRef = currentLang === 'mal' && reading.reference_mal ? reading.reference_mal : reading.reference_eng;
-                let link = currentLang === 'mal' ? generatePOCBibleLink(reading.reference_eng) : generateBibleGatewayLink(reading.reference_eng);
-                
-                if (!displayRef) return; // Skip if empty
+            
+            if (data.readingSets) {
+                data.readingSets.forEach((set, index) => {
+                    const setTitle = currentLang === 'mal' && set.title.ml ? set.title.ml : set.title.en;
+                    
+                    let setHtml = '';
+                    if (index > 0) {
+                        setHtml += '<div class="reading-set-separator">────────────────────────</div>';
+                    }
+                    if (setTitle) {
+                        setHtml += `<h3 class="reading-set-title">${setTitle}</h3>`;
+                    }
+                    
+                    uiReadings.insertAdjacentHTML('beforeend', setHtml);
+                    
+                    set.readings.forEach(reading => {
+                        let displayRef = currentLang === 'mal' && reading.reference.ml ? reading.reference.ml : reading.reference.en;
+                        // Always generate english link for POC bible translation map logic to work
+                        let link = currentLang === 'mal' ? generatePOCBibleLink(reading.reference.en) : generateBibleGatewayLink(reading.reference.en);
+                        
+                        if (!displayRef) return; // Skip if empty
 
-                const readingHtml = `
-                    <div class="reading-item">
-                        <span class="reading-type">${reading.type}</span>
-                        <a href="${link}" target="_blank" rel="noopener noreferrer" class="reading-ref">
-                            ${displayRef}
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-left: 4px; vertical-align: middle;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-                        </a>
-                    </div>
-                `;
-                uiReadings.insertAdjacentHTML('beforeend', readingHtml);
-            });
+                        const readingHtml = `
+                            <div class="reading-item">
+                                <span class="reading-type">${reading.type}</span>
+                                <a href="${link}" target="_blank" rel="noopener noreferrer" class="reading-ref">
+                                    ${displayRef}
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; margin-left: 4px; vertical-align: middle;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                                </a>
+                            </div>
+                        `;
+                        uiReadings.insertAdjacentHTML('beforeend', readingHtml);
+                    });
+                });
+            }
         } else {
             uiDay.textContent = 'Feria';
             uiSeason.textContent = 'Ordinary Time';

@@ -259,6 +259,21 @@ input:checked + .toggle-slider:before {
     margin-bottom: var(--spacing-md);
 }
 
+.reading-set-separator {
+    text-align: center;
+    color: var(--border-color);
+    margin: var(--spacing-lg) 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.reading-set-title {
+    font-size: 1.1rem;
+    color: var(--accent-burgundy);
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
 .desktop-nav {
     display: none;
 }
