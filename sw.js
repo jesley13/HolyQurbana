@@ -1,4 +1,4 @@
-const CACHE_NAME = 'holy-qurbana-v7';
+const CACHE_NAME = 'holy-qurbana-v8';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
