@@ -305,8 +305,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let deferredPrompt = null;
     const installBtn = document.getElementById('btn-install-app');
+    const shareBtn = document.getElementById('btn-share-app');
+    const navShareBtn = document.getElementById('nav-share');
     const fallbackModal = document.getElementById('pwa-fallback-modal');
     const btnCloseModal = document.getElementById('btn-close-modal');
+
+    const handleShare = async () => {
+        const shareData = {
+            title: 'Holy Qurbana App',
+            text: 'Read daily readings and the Holy Qurbana text of the Syro-Malabar Church.',
+            url: window.location.origin + window.location.pathname
+        };
+        
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                // Fallback to copying to clipboard
+                await navigator.clipboard.writeText(shareData.url);
+                alert('App link copied to clipboard!');
+            }
+        } catch (err) {
+            console.error('Error sharing:', err);
+        }
+    };
+
+    if (shareBtn) shareBtn.addEventListener('click', handleShare);
+    if (navShareBtn) navShareBtn.addEventListener('click', handleShare);
 
     window.addEventListener('beforeinstallprompt', (e) => {
         console.log('[PWA] beforeinstallprompt event fired! The browser natively supports installation prompt.');
