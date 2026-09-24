@@ -28,7 +28,6 @@
                 </button>
                 <button id="nav-desktop-today" class="btn-icon" aria-label="Today">Today</button>
                 <button id="nav-desktop-qurbana" class="btn-icon" aria-label="Qurbana Text">Qurbana Text</button>
-                <button id="nav-desktop-church" class="btn-icon" aria-label="Find a Church">Find a Church</button>
             </nav>
         </div>
     </header>
@@ -121,107 +120,6 @@
             </button>
         </section>
 
-        <!-- Church Finder Screen -->
-        <section id="church-screen" class="screen church-screen">
-            <div class="church-layout">
-                <!-- Left Panel: Search & Filter -->
-                <div class="church-sidebar">
-                    <h2 class="church-title">Find a Syro-Malabar Church</h2>
-                    
-                    <div class="search-box">
-                        <input type="text" id="church-search-input" placeholder="Search city, postcode or location">
-                        <button id="btn-church-search" class="btn-primary" aria-label="Search">Search</button>
-                    </div>
-                    
-                    <button id="btn-church-near-me" class="btn-outline">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
-                        Near Me
-                    </button>
-                    
-                    <div class="church-filters">
-                        <h3>Filters</h3>
-                        
-                        <div class="filter-group">
-                            <label>Service Type</label>
-                            <div class="chip-group" id="filter-service">
-                                <button class="chip active" data-val="all">All</button>
-                                <button class="chip" data-val="mass">Mass</button>
-                                <button class="chip" data-val="confession">Confession</button>
-                                <button class="chip" data-val="adoration">Adoration</button>
-                            </div>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="filter-day">Day</label>
-                            <select id="filter-day">
-                                <option value="all">All</option>
-                                <option value="sunday">Sunday</option>
-                                <option value="monday">Monday</option>
-                                <option value="tuesday">Tuesday</option>
-                                <option value="wednesday">Wednesday</option>
-                                <option value="thursday">Thursday</option>
-                                <option value="friday">Friday</option>
-                                <option value="saturday">Saturday</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="filter-lang">Language</label>
-                            <select id="filter-lang">
-                                <option value="all">All</option>
-                                <option value="malayalam">Malayalam</option>
-                                <option value="english">English</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="filter-sort">Sort By</label>
-                            <select id="filter-sort">
-                                <option value="distance">Distance</option>
-                                <option value="time">Time</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Right Panel: Results -->
-                <div class="church-results-area">
-                    <div class="results-header">
-                        <span id="church-results-count">Search for a location</span>
-                        <div class="view-toggle">
-                            <button id="btn-view-list" class="active">List</button>
-                            <button id="btn-view-map">Map</button>
-                        </div>
-                    </div>
-                    
-                    <div id="church-results-container" class="church-results-list">
-                        <!-- Results injected here -->
-                    </div>
-
-                    <div id="church-map-container" class="church-map-container" style="display: none;">
-                        <p style="text-align: center; padding: 20px;">Map view will appear here</p>
-                    </div>
-
-                    <div class="church-attribution">
-                        <p>Church and Mass information sourced from <a href="https://masstimes.org/" target="_blank">MassTimes</a>.</p>
-                        <p class="small-note">Mass schedules can change. Please verify with the parish before travelling.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Church Detail Modal -->
-            <div id="church-detail-modal" class="church-modal-overlay">
-                <div class="church-modal-content">
-                    <button class="btn-close-modal" id="btn-close-church-detail">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                    <div id="church-detail-body">
-                        <!-- Detail injected here -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <!-- Bottom Navigation (Mobile) -->
@@ -233,10 +131,6 @@
         <button id="nav-qurbana" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             <span>Qurbana</span>
-        </button>
-        <button id="nav-church" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>Church</span>
         </button>
         <button id="nav-share" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
@@ -256,7 +150,6 @@
     <!-- Scripts -->
     <script src="mass-data.js"></script>
     <script src="readings.js"></script>
-    <script src="church-finder.js"></script>
     <script src="app.js"></script>
     
     <!-- PWA Service Worker -->

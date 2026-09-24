@@ -4,12 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const navQurbana = document.getElementById('nav-qurbana');
     const navDesktopToday = document.getElementById('nav-desktop-today');
     const navDesktopQurbana = document.getElementById('nav-desktop-qurbana');
-    const navChurch = document.getElementById('nav-church');
-    const navDesktopChurch = document.getElementById('nav-desktop-church');
     
     const screenToday = document.getElementById('today-screen');
     const screenQurbana = document.getElementById('qurbana-screen');
-    const screenChurch = document.getElementById('church-screen');
     const btnPrayQurbana = document.getElementById('btn-pray-qurbana');
     const btnBackToday = document.getElementById('btn-back-today');
     
@@ -50,37 +47,26 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Navigation Logic ---
     function switchScreen(screen) {
-        // Reset all
-        screenToday.classList.remove('active');
-        screenQurbana.classList.remove('active');
-        if (screenChurch) screenChurch.classList.remove('active');
-        
-        navToday.classList.remove('active');
-        navQurbana.classList.remove('active');
-        if (navChurch) navChurch.classList.remove('active');
-
         if (screen === 'today') {
             screenToday.classList.add('active');
+            screenQurbana.classList.remove('active');
             navToday.classList.add('active');
+            navQurbana.classList.remove('active');
+            window.scrollTo(0, 0);
         } else if (screen === 'qurbana') {
+            screenToday.classList.remove('active');
             screenQurbana.classList.add('active');
+            navToday.classList.remove('active');
             navQurbana.classList.add('active');
             renderQurbana();
-        } else if (screen === 'church') {
-            if (screenChurch) screenChurch.classList.add('active');
-            if (navChurch) navChurch.classList.add('active');
+            window.scrollTo(0, 0);
         }
-        window.scrollTo(0, 0);
     }
 
     navToday.addEventListener('click', () => switchScreen('today'));
     navQurbana.addEventListener('click', () => switchScreen('qurbana'));
-    if (navChurch) navChurch.addEventListener('click', () => switchScreen('church'));
-    
     navDesktopToday?.addEventListener('click', () => switchScreen('today'));
     navDesktopQurbana?.addEventListener('click', () => switchScreen('qurbana'));
-    navDesktopChurch?.addEventListener('click', () => switchScreen('church'));
-    
     btnPrayQurbana.addEventListener('click', () => switchScreen('qurbana'));
     btnBackToday.addEventListener('click', () => switchScreen('today'));
 
